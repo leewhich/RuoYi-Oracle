@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('(旧)角色管理列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>角色名称：</label>
+                                <input type="text" name="roleName"/>
+                            </li>
+                            <li>
+                                <label>角色描述：</label>
+                                <input type="text" name="roleDesc"/>
+                            </li>
+                            <li>
+                                <label>父级角色id：</label>
+                                <input type="text" name="parentRoleId"/>
+                            </li>
+                            <li>
+                                <label>参见操作员-系统平台表：</label>
+                                <input type="text" name="systemCode"/>
+                            </li>
+                            <li>
+                                <label>1可见2不可见：</label>
+                                <input type="text" name="state"/>
+                            </li>
+                            <li>
+                                <label>创建人：</label>
+                                <input type="text" name="creator"/>
+                            </li>
+                            <li>
+                                <label>创建时间：</label>
+                                <input type="text" class="time-input" placeholder="请选择创建时间" name="createtime"/>
+                            </li>
+                            <li>
+                                <label>修改人：</label>
+                                <input type="text" name="modifyer"/>
+                            </li>
+                            <li>
+                                <label>修改时间：</label>
+                                <input type="text" class="time-input" placeholder="请选择修改时间" name="modifytime"/>
+                            </li>
+                            <li>
+                                <label>超级0，管理员1-5，其他6-9：</label>
+                                <input type="text" name="roleLevel"/>
+                            </li>
+                            <li>
+                                <label>memo：</label>
+                                <input type="text" name="memo"/>
+                            </li>
+                            <li>
+                                <label>组织ID：</label>
+                                <input type="text" name="orgId"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="gps:roles:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="gps:roles:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="gps:roles:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="gps:roles:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('gps:roles:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('gps:roles:remove')}]];
+        var prefix = ctx + "gps/roles";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "(旧)角色管理",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'roleId',
+                    title: '角色id',
+                    visible: false
+                },
+                {
+                    field: 'roleName',
+                    title: '角色名称'
+                },
+                {
+                    field: 'roleDesc',
+                    title: '角色描述'
+                },
+                {
+                    field: 'parentRoleId',
+                    title: '父级角色id'
+                },
+                {
+                    field: 'roleType',
+                    title: '1;应用角色；2流程角色'
+                },
+                {
+                    field: 'systemCode',
+                    title: '参见操作员-系统平台表'
+                },
+                {
+                    field: 'state',
+                    title: '1可见2不可见'
+                },
+                {
+                    field: 'creator',
+                    title: '创建人'
+                },
+                {
+                    field: 'createtime',
+                    title: '创建时间'
+                },
+                {
+                    field: 'modifyer',
+                    title: '修改人'
+                },
+                {
+                    field: 'modifytime',
+                    title: '修改时间'
+                },
+                {
+                    field: 'roleLevel',
+                    title: '超级0，管理员1-5，其他6-9'
+                },
+                {
+                    field: 'memo',
+                    title: 'memo'
+                },
+                {
+                    field: 'orgId',
+                    title: '组织ID'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.roleId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.roleId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

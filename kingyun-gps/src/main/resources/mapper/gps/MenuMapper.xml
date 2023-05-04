@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingyun.gpsinspection.mapper.MenuMapper">
+    
+    <resultMap type="Menu" id="MenuResult">
+        <result property="menuId"    column="menu_id"    />
+        <result property="menuName"    column="menu_name"    />
+        <result property="menuStyle"    column="menu_style"    />
+        <result property="systemPlatformId"    column="system_platform_id"    />
+        <result property="modulesPermission"    column="modules_permission"    />
+        <result property="url"    column="url"    />
+        <result property="menuOrder"    column="menu_order"    />
+        <result property="menuCode"    column="menu_code"    />
+        <result property="imgPath"    column="img_path"    />
+        <result property="remark"    column="remark"    />
+        <result property="implClass"    column="impl_class"    />
+        <result property="prieCalss"    column="prie_calss"    />
+        <result property="systemId"    column="system_id"    />
+        <result property="status"    column="status"    />
+        <result property="parentMenuId"    column="parent_menu_id"    />
+        <result property="remark1"    column="remark1"    />
+        <result property="remark2"    column="remark2"    />
+        <result property="creator"    column="creator"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="modifier"    column="modifier"    />
+        <result property="modifyDate"    column="modify_date"    />
+        <result property="menuType"    column="menu_type"    />
+        <result property="appId"    column="app_id"    />
+        <result property="orderNo"    column="order_no"    />
+    </resultMap>
+
+    <sql id="selectMenuVo">
+        select menu_id, menu_name, menu_style, system_platform_id, modules_permission, url, menu_order, menu_code, img_path, remark, impl_class, prie_calss, system_id, status, parent_menu_id, remark1, remark2, creator, create_date, modifier, modify_date, menu_type, app_id, order_no from wwp_menu
+    </sql>
+
+    <select id="selectMenuList" parameterType="Menu" resultMap="MenuResult">
+        <include refid="selectMenuVo"/>
+        <where>  
+            <if test="menuName != null  and menuName != ''"> and menu_name like concat(concat('%', #{menuName}), '%')</if>
+            <if test="menuStyle != null  and menuStyle != ''"> and menu_style = #{menuStyle}</if>
+            <if test="systemPlatformId != null  and systemPlatformId != ''"> and system_platform_id = #{systemPlatformId}</if>
+            <if test="modulesPermission != null  and modulesPermission != ''"> and modules_permission = #{modulesPermission}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="menuOrder != null "> and menu_order = #{menuOrder}</if>
+            <if test="menuCode != null  and menuCode != ''"> and menu_code = #{menuCode}</if>
+            <if test="imgPath != null  and imgPath != ''"> and img_path = #{imgPath}</if>
+            <if test="implClass != null  and implClass != ''"> and impl_class = #{implClass}</if>
+            <if test="prieCalss != null  and prieCalss != ''"> and prie_calss = #{prieCalss}</if>
+            <if test="systemId != null  and systemId != ''"> and system_id = #{systemId}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="parentMenuId != null  and parentMenuId != ''"> and parent_menu_id = #{parentMenuId}</if>
+            <if test="remark1 != null  and remark1 != ''"> and remark1 = #{remark1}</if>
+            <if test="remark2 != null  and remark2 != ''"> and remark2 = #{remark2}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="modifier != null  and modifier != ''"> and modifier = #{modifier}</if>
+            <if test="modifyDate != null "> and modify_date = #{modifyDate}</if>
+            <if test="menuType != null  and menuType != ''"> and menu_type = #{menuType}</if>
+            <if test="appId != null  and appId != ''"> and app_id = #{appId}</if>
+            <if test="orderNo != null "> and order_no = #{orderNo}</if>
+        </where>
+    </select>
+    
+    <select id="selectMenuByMenuId" parameterType="String" resultMap="MenuResult">
+        <include refid="selectMenuVo"/>
+        where menu_id = #{menuId}
+    </select>
+        
+    <insert id="insertMenu" parameterType="Menu">
+        <selectKey keyProperty="menuId" resultType="long" order="BEFORE">
+            SELECT seq_wwp_menu.NEXTVAL as menuId FROM DUAL
+        </selectKey>
+        insert into wwp_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="menuId != null">menu_id,</if>
+            <if test="menuName != null">menu_name,</if>
+            <if test="menuStyle != null">menu_style,</if>
+            <if test="systemPlatformId != null">system_platform_id,</if>
+            <if test="modulesPermission != null">modules_permission,</if>
+            <if test="url != null">url,</if>
+            <if test="menuOrder != null">menu_order,</if>
+            <if test="menuCode != null">menu_code,</if>
+            <if test="imgPath != null">img_path,</if>
+            <if test="remark != null">remark,</if>
+            <if test="implClass != null">impl_class,</if>
+            <if test="prieCalss != null">prie_calss,</if>
+            <if test="systemId != null">system_id,</if>
+            <if test="status != null">status,</if>
+            <if test="parentMenuId != null">parent_menu_id,</if>
+            <if test="remark1 != null">remark1,</if>
+            <if test="remark2 != null">remark2,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="modifier != null">modifier,</if>
+            <if test="modifyDate != null">modify_date,</if>
+            <if test="menuType != null">menu_type,</if>
+            <if test="appId != null">app_id,</if>
+            <if test="orderNo != null">order_no,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="menuId != null">#{menuId},</if>
+            <if test="menuName != null">#{menuName},</if>
+            <if test="menuStyle != null">#{menuStyle},</if>
+            <if test="systemPlatformId != null">#{systemPlatformId},</if>
+            <if test="modulesPermission != null">#{modulesPermission},</if>
+            <if test="url != null">#{url},</if>
+            <if test="menuOrder != null">#{menuOrder},</if>
+            <if test="menuCode != null">#{menuCode},</if>
+            <if test="imgPath != null">#{imgPath},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="implClass != null">#{implClass},</if>
+            <if test="prieCalss != null">#{prieCalss},</if>
+            <if test="systemId != null">#{systemId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="parentMenuId != null">#{parentMenuId},</if>
+            <if test="remark1 != null">#{remark1},</if>
+            <if test="remark2 != null">#{remark2},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="modifier != null">#{modifier},</if>
+            <if test="modifyDate != null">#{modifyDate},</if>
+            <if test="menuType != null">#{menuType},</if>
+            <if test="appId != null">#{appId},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMenu" parameterType="Menu">
+        update wwp_menu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="menuName != null">menu_name = #{menuName},</if>
+            <if test="menuStyle != null">menu_style = #{menuStyle},</if>
+            <if test="systemPlatformId != null">system_platform_id = #{systemPlatformId},</if>
+            <if test="modulesPermission != null">modules_permission = #{modulesPermission},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="menuOrder != null">menu_order = #{menuOrder},</if>
+            <if test="menuCode != null">menu_code = #{menuCode},</if>
+            <if test="imgPath != null">img_path = #{imgPath},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="implClass != null">impl_class = #{implClass},</if>
+            <if test="prieCalss != null">prie_calss = #{prieCalss},</if>
+            <if test="systemId != null">system_id = #{systemId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="parentMenuId != null">parent_menu_id = #{parentMenuId},</if>
+            <if test="remark1 != null">remark1 = #{remark1},</if>
+            <if test="remark2 != null">remark2 = #{remark2},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="modifier != null">modifier = #{modifier},</if>
+            <if test="modifyDate != null">modify_date = #{modifyDate},</if>
+            <if test="menuType != null">menu_type = #{menuType},</if>
+            <if test="appId != null">app_id = #{appId},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+        </trim>
+        where menu_id = #{menuId}
+    </update>
+
+    <delete id="deleteMenuByMenuId" parameterType="String">
+        delete from wwp_menu where menu_id = #{menuId}
+    </delete>
+
+    <delete id="deleteMenuByMenuIds" parameterType="String">
+        delete from wwp_menu where menu_id in 
+        <foreach item="menuId" collection="array" open="(" separator="," close=")">
+            #{menuId}
+        </foreach>
+    </delete>
+</mapper>

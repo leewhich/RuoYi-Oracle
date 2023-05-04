@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingyun.gpsinspection.mapper.AccountRoleMapper">
+    
+    <resultMap type="AccountRole" id="AccountRoleResult">
+        <result property="accountRoleId"    column="account_role_id"    />
+        <result property="roleId"    column="role_id"    />
+        <result property="operatorId"    column="operator_id"    />
+        <result property="status"    column="status"    />
+        <result property="creator"    column="creator"    />
+        <result property="createtime"    column="createtime"    />
+        <result property="modifyer"    column="modifyer"    />
+        <result property="modifytime"    column="modifytime"    />
+        <result property="orgId"    column="org_id"    />
+        <result property="subsystem"    column="subsystem"    />
+    </resultMap>
+
+    <sql id="selectAccountRoleVo">
+        select account_role_id, role_id, operator_id, status, creator, createtime, modifyer, modifytime, org_id, subsystem from wwp_account_role
+    </sql>
+
+    <select id="selectAccountRoleList" parameterType="AccountRole" resultMap="AccountRoleResult">
+        <include refid="selectAccountRoleVo"/>
+        <where>  
+            <if test="roleId != null  and roleId != ''"> and role_id = #{roleId}</if>
+            <if test="operatorId != null  and operatorId != ''"> and operator_id = #{operatorId}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+            <if test="createtime != null "> and createtime = #{createtime}</if>
+            <if test="modifyer != null  and modifyer != ''"> and modifyer = #{modifyer}</if>
+            <if test="modifytime != null "> and modifytime = #{modifytime}</if>
+            <if test="orgId != null  and orgId != ''"> and org_id = #{orgId}</if>
+            <if test="subsystem != null  and subsystem != ''"> and subsystem = #{subsystem}</if>
+        </where>
+    </select>
+    
+    <select id="selectAccountRoleByAccountRoleId" parameterType="String" resultMap="AccountRoleResult">
+        <include refid="selectAccountRoleVo"/>
+        where account_role_id = #{accountRoleId}
+    </select>
+        
+    <insert id="insertAccountRole" parameterType="AccountRole">
+        <selectKey keyProperty="accountRoleId" resultType="long" order="BEFORE">
+            SELECT seq_wwp_account_role.NEXTVAL as accountRoleId FROM DUAL
+        </selectKey>
+        insert into wwp_account_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="accountRoleId != null">account_role_id,</if>
+            <if test="roleId != null">role_id,</if>
+            <if test="operatorId != null">operator_id,</if>
+            <if test="status != null">status,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createtime != null">createtime,</if>
+            <if test="modifyer != null">modifyer,</if>
+            <if test="modifytime != null">modifytime,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="subsystem != null">subsystem,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="accountRoleId != null">#{accountRoleId},</if>
+            <if test="roleId != null">#{roleId},</if>
+            <if test="operatorId != null">#{operatorId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createtime != null">#{createtime},</if>
+            <if test="modifyer != null">#{modifyer},</if>
+            <if test="modifytime != null">#{modifytime},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="subsystem != null">#{subsystem},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAccountRole" parameterType="AccountRole">
+        update wwp_account_role
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roleId != null">role_id = #{roleId},</if>
+            <if test="operatorId != null">operator_id = #{operatorId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createtime != null">createtime = #{createtime},</if>
+            <if test="modifyer != null">modifyer = #{modifyer},</if>
+            <if test="modifytime != null">modifytime = #{modifytime},</if>
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="subsystem != null">subsystem = #{subsystem},</if>
+        </trim>
+        where account_role_id = #{accountRoleId}
+    </update>
+
+    <delete id="deleteAccountRoleByAccountRoleId" parameterType="String">
+        delete from wwp_account_role where account_role_id = #{accountRoleId}
+    </delete>
+
+    <delete id="deleteAccountRoleByAccountRoleIds" parameterType="String">
+        delete from wwp_account_role where account_role_id in 
+        <foreach item="accountRoleId" collection="array" open="(" separator="," close=")">
+            #{accountRoleId}
+        </foreach>
+    </delete>
+</mapper>

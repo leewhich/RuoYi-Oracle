@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('(旧)组织机构列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>组织名字：</label>
+                                <input type="text" name="orgName"/>
+                            </li>
+                            <li>
+                                <label>层级代码，最顶层为001，每级3个字符表示父级组织ID：</label>
+                                <input type="text" name="parentOrgId"/>
+                            </li>
+                            <li>
+                                <label>组织机构负责人：</label>
+                                <input type="text" name="orgLeader"/>
+                            </li>
+                            <li>
+                                <label>地址：</label>
+                                <input type="text" name="address"/>
+                            </li>
+                            <li>
+                                <label>邮编：</label>
+                                <input type="text" name="postcode"/>
+                            </li>
+                            <li>
+                                <label>描述：</label>
+                                <input type="text" name="description"/>
+                            </li>
+                            <li>
+                                <label>电话1：</label>
+                                <input type="text" name="tel1"/>
+                            </li>
+                            <li>
+                                <label>电话2：</label>
+                                <input type="text" name="tel2"/>
+                            </li>
+                            <li>
+                                <label>传真：</label>
+                                <input type="text" name="fax"/>
+                            </li>
+                            <li>
+                                <label>创建人id：</label>
+                                <input type="text" name="creatorId"/>
+                            </li>
+                            <li>
+                                <label>创建时间：</label>
+                                <input type="text" class="time-input" placeholder="请选择创建时间" name="createDt"/>
+                            </li>
+                            <li>
+                                <label>操作人：</label>
+                                <input type="text" name="operateId"/>
+                            </li>
+                            <li>
+                                <label>操作时间：</label>
+                                <input type="text" class="time-input" placeholder="请选择操作时间" name="operateDt"/>
+                            </li>
+                            <li>
+                                <label>初始化：</label>
+                                <input type="text" name="initials"/>
+                            </li>
+                            <li>
+                                <label>序号：</label>
+                                <input type="text" name="orderNo"/>
+                            </li>
+                            <li>
+                                <label>是否真实：</label>
+                                <input type="text" name="isVirtual"/>
+                            </li>
+                            <li>
+                                <label>标志：</label>
+                                <input type="text" name="sysFlag"/>
+                            </li>
+                            <li>
+                                <label>sysid：</label>
+                                <input type="text" name="orgSysId"/>
+                            </li>
+                            <li>
+                                <label>父级id：</label>
+                                <input type="text" name="orgParentId"/>
+                            </li>
+                            <li>
+                                <label>旧ID：</label>
+                                <input type="text" name="oldId"/>
+                            </li>
+                            <li>
+                                <label>旧编码：</label>
+                                <input type="text" name="orgCode"/>
+                            </li>
+                            <li>
+                                <label>组织级别：</label>
+                                <input type="text" name="orgLevel"/>
+                            </li>
+                            <li>
+                                <label>bsflag：</label>
+                                <input type="text" name="bsflag"/>
+                            </li>
+                            <li>
+                                <label>systemid：</label>
+                                <input type="text" name="systemid"/>
+                            </li>
+                            <li>
+                                <label>精度：</label>
+                                <input type="text" name="accuracy"/>
+                            </li>
+                            <li>
+                                <label>经度：</label>
+                                <input type="text" name="latitude"/>
+                            </li>
+                            <li>
+                                <label>is_autonomous：</label>
+                                <input type="text" name="isAutonomous"/>
+                            </li>
+                            <li>
+                                <label>1；分公司；2：气矿；3：作业区；4：一线场站站；5：井；6：管线：</label>
+                                <input type="text" name="orgLevelId"/>
+                            </li>
+                            <li>
+                                <label>is_peripheral：</label>
+                                <input type="text" name="isPeripheral"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="gps:organization:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="gps:organization:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="gps:organization:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="gps:organization:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('gps:organization:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('gps:organization:remove')}]];
+        var prefix = ctx + "gps/organization";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "(旧)组织机构",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'orgId',
+                    title: '组织结构主键',
+                    visible: false
+                },
+                {
+                    field: 'orgName',
+                    title: '组织名字'
+                },
+                {
+                    field: 'parentOrgId',
+                    title: '层级代码，最顶层为001，每级3个字符表示父级组织ID'
+                },
+                {
+                    field: 'orgLeader',
+                    title: '组织机构负责人'
+                },
+                {
+                    field: 'address',
+                    title: '地址'
+                },
+                {
+                    field: 'postcode',
+                    title: '邮编'
+                },
+                {
+                    field: 'description',
+                    title: '描述'
+                },
+                {
+                    field: 'status',
+                    title: '0：正常  1：停用'
+                },
+                {
+                    field: 'tel1',
+                    title: '电话1'
+                },
+                {
+                    field: 'tel2',
+                    title: '电话2'
+                },
+                {
+                    field: 'fax',
+                    title: '传真'
+                },
+                {
+                    field: 'creatorId',
+                    title: '创建人id'
+                },
+                {
+                    field: 'createDt',
+                    title: '创建时间'
+                },
+                {
+                    field: 'operateId',
+                    title: '操作人'
+                },
+                {
+                    field: 'operateDt',
+                    title: '操作时间'
+                },
+                {
+                    field: 'initials',
+                    title: '初始化'
+                },
+                {
+                    field: 'orderNo',
+                    title: '序号'
+                },
+                {
+                    field: 'isVirtual',
+                    title: '是否真实'
+                },
+                {
+                    field: 'sysFlag',
+                    title: '标志'
+                },
+                {
+                    field: 'orgSysId',
+                    title: 'sysid'
+                },
+                {
+                    field: 'orgParentId',
+                    title: '父级id'
+                },
+                {
+                    field: 'oldId',
+                    title: '旧ID'
+                },
+                {
+                    field: 'orgCode',
+                    title: '旧编码'
+                },
+                {
+                    field: 'orgType',
+                    title: '组织的类别包括单位、部门、分公司等'
+                },
+                {
+                    field: 'orgLevel',
+                    title: '组织级别'
+                },
+                {
+                    field: 'bsflag',
+                    title: 'bsflag'
+                },
+                {
+                    field: 'systemid',
+                    title: 'systemid'
+                },
+                {
+                    field: 'accuracy',
+                    title: '精度'
+                },
+                {
+                    field: 'latitude',
+                    title: '经度'
+                },
+                {
+                    field: 'isAutonomous',
+                    title: 'is_autonomous'
+                },
+                {
+                    field: 'orgLevelId',
+                    title: '1；分公司；2：气矿；3：作业区；4：一线场站站；5：井；6：管线'
+                },
+                {
+                    field: 'isPeripheral',
+                    title: 'is_peripheral'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.orgId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.orgId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

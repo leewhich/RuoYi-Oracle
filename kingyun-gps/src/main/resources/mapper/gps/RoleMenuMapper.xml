@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingyun.gpsinspection.mapper.RoleMenuMapper">
+    
+    <resultMap type="RoleMenu" id="RoleMenuResult">
+        <result property="roleMenuId"    column="role_menu_id"    />
+        <result property="roleId"    column="role_id"    />
+        <result property="menuId"    column="menu_id"    />
+        <result property="state"    column="state"    />
+        <result property="subsystem"    column="subsystem"    />
+        <result property="creator"    column="creator"    />
+        <result property="createtime"    column="createtime"    />
+        <result property="modifyer"    column="modifyer"    />
+        <result property="modifytime"    column="modifytime"    />
+    </resultMap>
+
+    <sql id="selectRoleMenuVo">
+        select role_menu_id, role_id, menu_id, state, subsystem, creator, createtime, modifyer, modifytime from wwp_role_menu
+    </sql>
+
+    <select id="selectRoleMenuList" parameterType="RoleMenu" resultMap="RoleMenuResult">
+        <include refid="selectRoleMenuVo"/>
+        <where>  
+            <if test="roleId != null  and roleId != ''"> and role_id = #{roleId}</if>
+            <if test="menuId != null  and menuId != ''"> and menu_id = #{menuId}</if>
+            <if test="state != null "> and state = #{state}</if>
+            <if test="subsystem != null  and subsystem != ''"> and subsystem = #{subsystem}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+            <if test="createtime != null "> and createtime = #{createtime}</if>
+            <if test="modifyer != null  and modifyer != ''"> and modifyer = #{modifyer}</if>
+            <if test="modifytime != null "> and modifytime = #{modifytime}</if>
+        </where>
+    </select>
+    
+    <select id="selectRoleMenuByRoleMenuId" parameterType="String" resultMap="RoleMenuResult">
+        <include refid="selectRoleMenuVo"/>
+        where role_menu_id = #{roleMenuId}
+    </select>
+        
+    <insert id="insertRoleMenu" parameterType="RoleMenu">
+        <selectKey keyProperty="roleMenuId" resultType="long" order="BEFORE">
+            SELECT seq_wwp_role_menu.NEXTVAL as roleMenuId FROM DUAL
+        </selectKey>
+        insert into wwp_role_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleMenuId != null">role_menu_id,</if>
+            <if test="roleId != null">role_id,</if>
+            <if test="menuId != null">menu_id,</if>
+            <if test="state != null">state,</if>
+            <if test="subsystem != null">subsystem,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createtime != null">createtime,</if>
+            <if test="modifyer != null">modifyer,</if>
+            <if test="modifytime != null">modifytime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleMenuId != null">#{roleMenuId},</if>
+            <if test="roleId != null">#{roleId},</if>
+            <if test="menuId != null">#{menuId},</if>
+            <if test="state != null">#{state},</if>
+            <if test="subsystem != null">#{subsystem},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createtime != null">#{createtime},</if>
+            <if test="modifyer != null">#{modifyer},</if>
+            <if test="modifytime != null">#{modifytime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRoleMenu" parameterType="RoleMenu">
+        update wwp_role_menu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roleId != null">role_id = #{roleId},</if>
+            <if test="menuId != null">menu_id = #{menuId},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="subsystem != null">subsystem = #{subsystem},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createtime != null">createtime = #{createtime},</if>
+            <if test="modifyer != null">modifyer = #{modifyer},</if>
+            <if test="modifytime != null">modifytime = #{modifytime},</if>
+        </trim>
+        where role_menu_id = #{roleMenuId}
+    </update>
+
+    <delete id="deleteRoleMenuByRoleMenuId" parameterType="String">
+        delete from wwp_role_menu where role_menu_id = #{roleMenuId}
+    </delete>
+
+    <delete id="deleteRoleMenuByRoleMenuIds" parameterType="String">
+        delete from wwp_role_menu where role_menu_id in 
+        <foreach item="roleMenuId" collection="array" open="(" separator="," close=")">
+            #{roleMenuId}
+        </foreach>
+    </delete>
+</mapper>

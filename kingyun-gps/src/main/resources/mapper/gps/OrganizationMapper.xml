@@ -1,0 +1,1147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingyun.gpsinspection.mapper.OrganizationMapper">
+
+    <resultMap type="com.kingyun.gpsinspection.domain.Organization" id="OrganizationResult">
+        <result property="orgId"    column="org_id"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="parentOrgId"    column="parent_org_id"    />
+        <result property="orgLeader"    column="org_leader"    />
+        <result property="address"    column="address"    />
+        <result property="postcode"    column="postcode"    />
+        <result property="description"    column="description"    />
+        <result property="status"    column="status"    />
+        <result property="tel1"    column="tel1"    />
+        <result property="tel2"    column="tel2"    />
+        <result property="fax"    column="fax"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createDt"    column="create_dt"    />
+        <result property="operateId"    column="operate_id"    />
+        <result property="operateDt"    column="operate_dt"    />
+        <result property="initials"    column="initials"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="isVirtual"    column="is_virtual"    />
+        <result property="sysFlag"    column="sys_flag"    />
+        <result property="orgSysId"    column="org_sys_id"    />
+        <result property="orgParentId"    column="org_parent_id"    />
+        <result property="oldId"    column="old_id"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orgType"    column="org_type"    />
+        <result property="orgLevel"    column="org_level"    />
+        <result property="bsflag"    column="bsflag"    />
+        <result property="systemid"    column="systemid"    />
+        <result property="accuracy"    column="accuracy"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="isAutonomous"    column="is_autonomous"    />
+        <result property="orgLevelId"    column="org_level_id"    />
+        <result property="isPeripheral"    column="is_peripheral"    />
+    </resultMap>
+
+    <sql id="selectOrganizationVo">
+        select org_id, org_name, parent_org_id, org_leader, address, postcode, description, status, tel1, tel2, fax, creator_id, create_dt, operate_id, operate_dt, initials, order_no, is_virtual, sys_flag, org_sys_id, org_parent_id, old_id, org_code, org_type, org_level, bsflag, systemid, accuracy, latitude, is_autonomous, org_level_id, is_peripheral from wwp_organization
+    </sql>
+
+    <select id="selectOrganizationList" parameterType="com.kingyun.gpsinspection.domain.Organization" resultMap="OrganizationResult">
+        <include refid="selectOrganizationVo"/>
+        <where>
+            <if test="orgName != null  and orgName != ''"> and org_name like concat(concat('%', #{orgName}), '%')</if>
+            <if test="parentOrgId != null  and parentOrgId != ''"> and parent_org_id = #{parentOrgId}</if>
+            <if test="orgLeader != null  and orgLeader != ''"> and org_leader = #{orgLeader}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="postcode != null  and postcode != ''"> and postcode = #{postcode}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="tel1 != null  and tel1 != ''"> and tel1 = #{tel1}</if>
+            <if test="tel2 != null  and tel2 != ''"> and tel2 = #{tel2}</if>
+            <if test="fax != null  and fax != ''"> and fax = #{fax}</if>
+            <if test="creatorId != null  and creatorId != ''"> and creator_id = #{creatorId}</if>
+            <if test="createDt != null "> and create_dt = #{createDt}</if>
+            <if test="operateId != null  and operateId != ''"> and operate_id = #{operateId}</if>
+            <if test="operateDt != null "> and operate_dt = #{operateDt}</if>
+            <if test="initials != null  and initials != ''"> and initials = #{initials}</if>
+            <if test="orderNo != null "> and order_no = #{orderNo}</if>
+            <if test="isVirtual != null  and isVirtual != ''"> and is_virtual = #{isVirtual}</if>
+            <if test="sysFlag != null "> and sys_flag = #{sysFlag}</if>
+            <if test="orgSysId != null  and orgSysId != ''"> and org_sys_id = #{orgSysId}</if>
+            <if test="orgParentId != null  and orgParentId != ''"> and org_parent_id = #{orgParentId}</if>
+            <if test="oldId != null  and oldId != ''"> and old_id = #{oldId}</if>
+            <if test="orgCode != null  and orgCode != ''"> and org_code = #{orgCode}</if>
+            <if test="orgType != null  and orgType != ''"> and org_type = #{orgType}</if>
+            <if test="orgLevel != null  and orgLevel != ''"> and org_level = #{orgLevel}</if>
+            <if test="bsflag != null  and bsflag != ''"> and bsflag = #{bsflag}</if>
+            <if test="systemid != null  and systemid != ''"> and systemid = #{systemid}</if>
+            <if test="accuracy != null  and accuracy != ''"> and accuracy = #{accuracy}</if>
+            <if test="latitude != null  and latitude != ''"> and latitude = #{latitude}</if>
+            <if test="isAutonomous != null  and isAutonomous != ''"> and is_autonomous = #{isAutonomous}</if>
+            <if test="orgLevelId != null  and orgLevelId != ''"> and org_level_id = #{orgLevelId}</if>
+            <if test="isPeripheral != null "> and is_peripheral = #{isPeripheral}</if>
+        </where>
+    </select>
+
+    <select id="selectOrganizationByOrgId" parameterType="String" resultMap="OrganizationResult">
+        <include refid="selectOrganizationVo"/>
+        where org_id = #{orgId}
+    </select>
+
+    <insert id="insertOrganization" parameterType="com.kingyun.gpsinspection.domain.Organization">
+        <selectKey keyProperty="orgId" resultType="long" order="BEFORE">
+            SELECT seq_wwp_organization.NEXTVAL as orgId FROM DUAL
+        </selectKey>
+        insert into wwp_organization
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">org_id,</if>
+            <if test="orgName != null and orgName != ''">org_name,</if>
+            <if test="parentOrgId != null and parentOrgId != ''">parent_org_id,</if>
+            <if test="orgLeader != null">org_leader,</if>
+            <if test="address != null">address,</if>
+            <if test="postcode != null">postcode,</if>
+            <if test="description != null">description,</if>
+            <if test="status != null">status,</if>
+            <if test="tel1 != null">tel1,</if>
+            <if test="tel2 != null">tel2,</if>
+            <if test="fax != null">fax,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createDt != null">create_dt,</if>
+            <if test="operateId != null">operate_id,</if>
+            <if test="operateDt != null">operate_dt,</if>
+            <if test="initials != null">initials,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="isVirtual != null">is_virtual,</if>
+            <if test="sysFlag != null">sys_flag,</if>
+            <if test="orgSysId != null">org_sys_id,</if>
+            <if test="orgParentId != null">org_parent_id,</if>
+            <if test="oldId != null">old_id,</if>
+            <if test="orgCode != null">org_code,</if>
+            <if test="orgType != null">org_type,</if>
+            <if test="orgLevel != null">org_level,</if>
+            <if test="bsflag != null">bsflag,</if>
+            <if test="systemid != null">systemid,</if>
+            <if test="accuracy != null">accuracy,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="isAutonomous != null">is_autonomous,</if>
+            <if test="orgLevelId != null">org_level_id,</if>
+            <if test="isPeripheral != null">is_peripheral,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">#{orgId},</if>
+            <if test="orgName != null and orgName != ''">#{orgName},</if>
+            <if test="parentOrgId != null and parentOrgId != ''">#{parentOrgId},</if>
+            <if test="orgLeader != null">#{orgLeader},</if>
+            <if test="address != null">#{address},</if>
+            <if test="postcode != null">#{postcode},</if>
+            <if test="description != null">#{description},</if>
+            <if test="status != null">#{status},</if>
+            <if test="tel1 != null">#{tel1},</if>
+            <if test="tel2 != null">#{tel2},</if>
+            <if test="fax != null">#{fax},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createDt != null">#{createDt},</if>
+            <if test="operateId != null">#{operateId},</if>
+            <if test="operateDt != null">#{operateDt},</if>
+            <if test="initials != null">#{initials},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="isVirtual != null">#{isVirtual},</if>
+            <if test="sysFlag != null">#{sysFlag},</if>
+            <if test="orgSysId != null">#{orgSysId},</if>
+            <if test="orgParentId != null">#{orgParentId},</if>
+            <if test="oldId != null">#{oldId},</if>
+            <if test="orgCode != null">#{orgCode},</if>
+            <if test="orgType != null">#{orgType},</if>
+            <if test="orgLevel != null">#{orgLevel},</if>
+            <if test="bsflag != null">#{bsflag},</if>
+            <if test="systemid != null">#{systemid},</if>
+            <if test="accuracy != null">#{accuracy},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="isAutonomous != null">#{isAutonomous},</if>
+            <if test="orgLevelId != null">#{orgLevelId},</if>
+            <if test="isPeripheral != null">#{isPeripheral},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrganization" parameterType="com.kingyun.gpsinspection.domain.Organization">
+        update wwp_organization
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orgName != null and orgName != ''">org_name = #{orgName},</if>
+            <if test="parentOrgId != null and parentOrgId != ''">parent_org_id = #{parentOrgId},</if>
+            <if test="orgLeader != null">org_leader = #{orgLeader},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="postcode != null">postcode = #{postcode},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="tel1 != null">tel1 = #{tel1},</if>
+            <if test="tel2 != null">tel2 = #{tel2},</if>
+            <if test="fax != null">fax = #{fax},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createDt != null">create_dt = #{createDt},</if>
+            <if test="operateId != null">operate_id = #{operateId},</if>
+            <if test="operateDt != null">operate_dt = #{operateDt},</if>
+            <if test="initials != null">initials = #{initials},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="isVirtual != null">is_virtual = #{isVirtual},</if>
+            <if test="sysFlag != null">sys_flag = #{sysFlag},</if>
+            <if test="orgSysId != null">org_sys_id = #{orgSysId},</if>
+            <if test="orgParentId != null">org_parent_id = #{orgParentId},</if>
+            <if test="oldId != null">old_id = #{oldId},</if>
+            <if test="orgCode != null">org_code = #{orgCode},</if>
+            <if test="orgType != null">org_type = #{orgType},</if>
+            <if test="orgLevel != null">org_level = #{orgLevel},</if>
+            <if test="bsflag != null">bsflag = #{bsflag},</if>
+            <if test="systemid != null">systemid = #{systemid},</if>
+            <if test="accuracy != null">accuracy = #{accuracy},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="isAutonomous != null">is_autonomous = #{isAutonomous},</if>
+            <if test="orgLevelId != null">org_level_id = #{orgLevelId},</if>
+            <if test="isPeripheral != null">is_peripheral = #{isPeripheral},</if>
+        </trim>
+        where org_id = #{orgId}
+    </update>
+
+    <delete id="deleteOrganizationByOrgId" parameterType="String">
+        delete from wwp_organization where org_id = #{orgId}
+    </delete>
+
+    <delete id="deleteOrganizationByOrgIds" parameterType="String">
+        delete from wwp_organization where org_id in
+        <foreach item="orgId" collection="array" open="(" separator="," close=")">
+            #{orgId}
+        </foreach>
+    </delete>
+
+
+    <resultMap id="BaseResultMap" type="com.kingyun.gpsinspection.domain.Organization">
+        <id column="ORG_ID" property="orgId" jdbcType="VARCHAR"/>
+        <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR"/>
+        <result column="ORG_LEVEL_ID" property="orgLevelId" jdbcType="VARCHAR"/>
+        <result column="PARENT_ORG_ID" property="parentOrgId" jdbcType="VARCHAR"/>
+        <result column="ORG_LEADER" property="orgLeader" jdbcType="VARCHAR"/>
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR"/>
+        <result column="POSTCODE" property="postcode" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="DECIMAL"/>
+        <result column="TEL1" property="tel1" jdbcType="VARCHAR"/>
+        <result column="TEL2" property="tel2" jdbcType="VARCHAR"/>
+        <result column="FAX" property="fax" jdbcType="VARCHAR"/>
+        <result column="CREATOR_ID" property="creatorId" jdbcType="VARCHAR"/>
+        <result column="CREATE_DT" property="createDt" jdbcType="VARCHAR"/>
+        <result column="OPERATE_ID" property="operateId" jdbcType="VARCHAR"/>
+        <result column="OPERATE_DT" property="operateDt" jdbcType="VARCHAR"/>
+        <result column="INITIALS" property="initials" jdbcType="VARCHAR"/>
+        <result column="ORDER_NO" property="orderNo" jdbcType="INTEGER"/>
+        <result column="IS_VIRTUAL" property="isVirtual" jdbcType="VARCHAR"/>
+        <result column="IS_AUTONOMOUS" property="isAutonomous" jdbcType="VARCHAR"/>
+        <result column="SYS_FLAG" property="sysFlag" jdbcType="VARCHAR"/>
+        <result column="ORG_SYS_ID" property="orgSysId" jdbcType="VARCHAR"/>
+        <result column="ORG_PARENT_ID" property="orgParentId" jdbcType="VARCHAR"/>
+        <result column="ORG_CODE" property="orgCode" jdbcType="VARCHAR"/>
+        <result column="ORG_TYPE" property="orgType" jdbcType="VARCHAR"/>
+        <result column="ORG_LEVEL" property="orgLevel" jdbcType="VARCHAR"/>
+        <result column="OLD_ID" property="oldId" jdbcType="VARCHAR"/>
+        <result column="BSFLAG" property="bsflag" jdbcType="VARCHAR"/>
+        <result column="SYSTEMID" property="systemid" jdbcType="VARCHAR"/>
+        <result column="ACCURACY" property="accuracy" jdbcType="VARCHAR"/>
+        <result column="LATITUDE" property="latitude" jdbcType="VARCHAR"/>
+        <result column="CHILD" property="child" jdbcType="DECIMAL"/>
+        <result column="IS_PERIPHERAL" property="isPeripheral" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <resultMap id="orgLevelMap" type="com.kingyun.gpsinspection.domain.OrgLevel">
+        <result column="ORG_LEVEL_ID" property="orgLevelId" jdbcType="VARCHAR"/>
+        <result column="ORG_LEVEL_NAME" property="orgLevelName" jdbcType="VARCHAR"/>
+        <result column="ORG_LEVEL" property="orgLevel" jdbcType="DECIMAL"/>
+        <result column="PARENT_TYPE_ID" property="parentTypeId" jdbcType="VARCHAR"/>
+        <result column="ORG_TYPE" property="orgType" jdbcType="DECIMAL"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="STATE" property="state" jdbcType="DECIMAL"/>
+    </resultMap>
+    <resultMap id="EmpResultMap" type="com.kingyun.gpsinspection.vo.EmployeeSimpleVo">
+        <id column="EMPLOYEE_ID" property="employeeId" jdbcType="NVARCHAR"/>
+        <result column="NAME" property="name" jdbcType="NVARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ORG_ID, ORG_NAME, ORG_LEVEL_ID, PARENT_ORG_ID, ORG_LEADER, ADDRESS, POSTCODE, DESCRIPTION,
+        STATUS, TEL1, TEL2, FAX, CREATOR_ID, CREATE_DT, OPERATE_ID, OPERATE_DT,
+        INITIALS, ORDER_NO, IS_VIRTUAL, IS_AUTONOMOUS, SYS_FLAG, ORG_SYS_ID, ORG_PARENT_ID, ORG_CODE,
+        ORG_TYPE, ORG_LEVEL, OLD_ID, BSFLAG, SYSTEMID, ACCURACY, LATITUDE,IS_PERIPHERAL
+    </sql>
+    <sql id="OrgLevel_Column_List">
+        ORG_LEVEL_ID,ORG_LEVEL_NAME,ORG_LEVEL,PARENT_TYPE_ID,ORG_TYPE,DESCRIPTION
+    </sql>
+
+    <select id="selectOrgLists" resultMap="BaseResultMap"
+            parameterType="com.kingyun.gpsinspection.domain.Organization">
+        select distinct
+        t.ORG_ID, t.ORG_NAME, t.ORG_LEVEL_ID, t.PARENT_ORG_ID, t.STATUS,t.IS_PERIPHERAL
+        from wwp_organization t
+        where t.STATUS=0
+        <if test="orgLevelId != null and orgLevelId != ''">
+            AND t.org_level_id &lt;= #{orgLevelId}
+        </if>
+        <if test="parentOrgId != null and parentOrgId != ''">
+            and (t.PARENT_ORG_ID = #{parentOrgId,jdbcType=VARCHAR} or t.org_id = #{parentOrgId,jdbcType=VARCHAR})
+        </if>
+        order by nlssort(org_name, 'NLS_SORT=SCHINESE_PINYIN_M'),org_Id asc
+    </select>
+
+    <select id="selectEmpByOrgId" resultMap="EmpResultMap" parameterType="java.lang.String">
+        SELECT EMPLOYEE_ID,NAME
+        FROM WWP_EMPLOYEE WHERE ORG_ID = #{orgId,jdbcType=NVARCHAR} AND STATUS=0
+    </select>
+    <!-- 按员工ID查询员工信息  -->
+    <select id="selectEmpByEmpId" resultMap="EmpResultMap" parameterType="java.lang.String">
+        SELECT EMPLOYEE_ID,NAME
+        FROM WWP_EMPLOYEE WHERE EMPLOYEE_ID = #{empId,jdbcType=NVARCHAR}
+    </select>
+    <!-- 查询所有子项获取父项Id -->
+    <select id="selectByOrgItem" resultMap="BaseResultMap"
+            parameterType="com.kingyun.gpsinspection.domain.Organization">
+        SELECT p.PARENT_ORG_ID FROM wwp_organization p WHERE p.STATUS=0
+        <if test="orgLevelId != null">
+            and p.org_level_id &lt;= #{orgLevelId,jdbcType=VARCHAR}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND p.org_name like'%'||#{keyword}||'%'
+        </if>
+        GROUP BY p.PARENT_ORG_ID
+    </select>
+
+    <select id="queryOrgIdByList" resultMap="BaseResultMap"
+            parameterType="com.kingyun.gpsinspection.domain.Organization">
+        select p.* from wwp_organization p where p.org_id in (
+        select p.org_id from wwp_organization p where p.status = 0
+        <if test="maxLevelId != null and maxLevelId != ''">
+            AND p.ORG_LEVEL_ID &gt;= #{maxLevelId}
+        </if>
+        start with p.org_id in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        connect by p.org_id = prior p.parent_org_id group by p.org_id)
+    </select>
+
+    <!-- 初始化组织树 -->
+    <select id="selectOrgTreeKeyword" resultMap="BaseResultMap"
+            parameterType="com.kingyun.gpsinspection.domain.Organization">
+        select distinct p.* from wwp_organization p
+        where p.status = 0
+            start with p.org_id in (
+            select o.org_id from wwp_organization o where o.org_name like '%'||#{keyword}||'%' and  o.status = 0
+            start with o.org_id = #{orgId} connect by prior o.org_id = o.parent_org_id
+            )
+        connect by prior p.parent_org_id = p.org_id and ORG_LEVEL_ID >= (
+            select o.org_level_id from wwp_organization o where o.org_id = #{orgId} and o.status = 0
+            )
+    </select>
+
+    <select id="selectOrgTree" resultMap="BaseResultMap"
+            parameterType="com.kingyun.gpsinspection.domain.Organization">
+        select distinct
+        <include refid="Base_Column_List"/>
+        from wwp_organization p
+        where p.status = 0 start with p.org_id = #{orgId} connect by prior p.org_id = p.parent_org_id
+    </select>
+
+    <!-- 查询小于给定层级的机构 -->
+    <select id="selectOrgByLevel" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from wwp_organization
+        where STATUS=0 and ORG_LEVEL_ID <![CDATA[<]]> #{level,jdbcType=VARCHAR}
+        order by nlssort(org_name, 'NLS_SORT=SCHINESE_PINYIN_M'),org_Id asc
+    </select>
+
+    <select id="selectDingLevelOrganization" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select * from wwp_organization d
+        where d.status = 0 and d.org_level_id = #{orgLevel}
+        start with d.org_id = #{orgId}
+        connect by
+        <if test="isLevel == false">
+            prior
+        </if>
+        d.parent_org_id =
+        <if test="isLevel == true">
+            prior
+        </if>
+        d.org_id
+        order by d.org_id asc
+    </select>
+
+
+    <select id="selectOrgById" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select ta.org_id as org_id,
+               ta.org_name as org_name,
+               '0' as otype,
+               to_char(ta.org_level_id) as org_level_id,
+               ta.PARENT_ORG_ID as PARENT_ORG_ID
+        from wwp_organization ta
+        where ta.org_id = #{id,jdbcType=NVARCHAR}
+        union
+        select tb.dep_id as org_id,
+               tb.dep_name as org_name,
+               '1' as otype,
+               to_char('-1') as org_level_id,
+               tb.parent_org_id as parent_org_id
+        from wwp_department tb
+        where tb.dep_id = #{id,jdbcType=NVARCHAR}
+    </select>
+    <select id="selectOrgByOrgPId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+            t.ORG_ID, t.ORG_NAME, t.ORG_LEVEL_ID, t.PARENT_ORG_ID, t.STATUS,t.IS_PERIPHERAL
+        from wwp_organization t
+        where t.STATUS=0 and t.PARENT_ORG_ID = #{orgId,jdbcType=VARCHAR}
+        order by nlssort(t.ORG_NAME,'NLS_SORT=SCHINESE_PINYIN_M' ) asc
+    </select>
+    <select id="selectOrgWithoutPipelineWellByOrgPId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+            t.ORG_ID, t.ORG_NAME, t.ORG_LEVEL_ID, t.PARENT_ORG_ID, t.STATUS
+        from wwp_organization t
+        where t.STATUS=0 and  <![CDATA[ t.org_level_id < 5 ]]>
+        and t.PARENT_ORG_ID = #{orgId,jdbcType=VARCHAR}
+        order by nlssort(t.ORG_NAME,'NLS_SORT=SCHINESE_PINYIN_M' ) asc
+    </select>
+    <select id="selectOrgList" resultMap="BaseResultMap"
+            parameterType="com.kingyun.gpsinspection.domain.Organization">
+        select distinct
+        t.ORG_ID, t.ORG_NAME, t.ORG_LEVEL_ID, t.PARENT_ORG_ID, t.STATUS,t.IS_PERIPHERAL
+        from wwp_organization t
+        where t.STATUS=0
+        <if test="orgLevelId != null and orgLevelId != ''">
+            AND t.org_level_id &lt;= #{orgLevelId}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            start with t.org_name like'%'||#{keyword}||'%' connect by prior t.parent_org_id =t.org_id
+        </if>
+        <if test="orgId != null and orgId != ''">
+            start with t.org_id =#{orgId} connect by t.parent_org_id = prior t.org_id
+        </if>
+        <if test="id != null and id != ''">
+            and t.PARENT_ORG_ID = #{id,jdbcType=VARCHAR}
+        </if>
+        <!--        <if test="isPeripheral != null">
+                    <if test="isPeripheral == 0">
+                        AND t.org_id in (select t.ORG_ID from wwp_organization t where t.STATUS=0 and t.org_level_id &lt; 5
+                        start with t.org_id = 'XNJV3M3kqvjkKjumoBm5Yup5562SW9Hz' connect by prior t.org_id =t.parent_org_id)
+                    </if>
+                    <if test="isPeripheral == 1">
+                        AND t.org_id NOT IN (select t.ORG_ID from wwp_organization t where t.STATUS=0 and t.org_level_id &lt; 5
+                        start with t.org_id = 'XNJV3M3kqvjkKjumoBm5Yup5562SW9Hz' connect by prior t.org_id =t.parent_org_id)
+                    </if>
+                </if>-->
+        order by nlssort(org_name, 'NLS_SORT=SCHINESE_PINYIN_M'),org_Id asc
+    </select>
+
+    <select id="selectOrgListLike" resultMap="BaseResultMap"
+            parameterType="com.kingyun.gpsinspection.domain.Organization">
+        select distinct t.ORG_ID, t.ORG_NAME, t.ORG_LEVEL_ID, t.PARENT_ORG_ID, t.STATUS,t.IS_PERIPHERAL
+        from wwp_organization t where t.STATUS=0
+        <if test="maxLevelId != null and maxLevelId != ''">
+            AND t.ORG_LEVEL_ID &gt;= #{maxLevelId}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            start with t.org_id in (
+            select distinct t.ORG_ID
+            from wwp_organization t
+            where t.STATUS=0
+            AND t.ORG_NAME like '%'||#{keyword}||'%'
+            <if test="orgLevelId != null and orgLevelId != ''">
+                AND t.org_level_id &lt;= #{orgLevelId}
+            </if>
+            start with t.org_id = #{orgId} connect by prior t.org_id = t.parent_org_id
+            )
+            connect by prior t.parent_org_id =t.org_id
+        </if>
+        order by nlssort(org_name, 'NLS_SORT=SCHINESE_PINYIN_M'),org_Id asc
+    </select>
+
+    <select id="selectOrgByOrgId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from wwp_organization
+        where ORG_ID = #{orgId,jdbcType=VARCHAR} AND STATUS=0
+    </select>
+
+    <select id="selectCountByPOId" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select
+            count(ORG_ID)
+        from wwp_organization
+        where PARENT_ORG_ID = #{orgId,jdbcType=VARCHAR} AND STATUS = 0
+    </select>
+
+    <select id="selectByListId" parameterType="java.util.List" resultType="java.lang.String">
+        SELECT p.ORG_ID FROM wwp_organization p
+        WHERE p.STATUS = 0 AND p.ORG_ID in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.orgId,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <select id="selectByOldIdListId" parameterType="java.util.List" resultMap="BaseResultMap">
+        SELECT p.ORG_ID,p.OLD_ID FROM wwp_organization p
+        WHERE p.STATUS = 0 AND p.OLD_ID in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.orgId,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <select id="selectListByPOId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select p.* from wwp_organization  p
+        where p.PARENT_ORG_ID = #{orgId,jdbcType=VARCHAR} AND p.STATUS = 0
+    </select>
+
+    <select id="selectOrgByName" resultType="com.kingyun.gpsinspection.domain.Organization"
+            parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from wwp_organization
+        where ORG_NAME = #{orgName,jdbcType=VARCHAR} AND STATUS = 0
+    </select>
+    <update id="deleteOrg" parameterType="java.lang.String">
+        update wwp_organization set STATUS = '1' where ORG_ID = #{orgId,jdbcType=VARCHAR}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+            p.ORG_ID, p.ORG_NAME, p.ORG_LEVEL_ID, p.PARENT_ORG_ID, p.ORG_LEADER, p.ADDRESS, p.POSTCODE, p.DESCRIPTION,
+            p.STATUS, p.TEL1, p.TEL2, p.FAX, p.CREATOR_ID, p.CREATE_DT, p.OPERATE_ID, p.OPERATE_DT,
+            p.INITIALS, p.ORDER_NO, p.IS_VIRTUAL, p.IS_AUTONOMOUS, p.SYS_FLAG, p.ORG_SYS_ID, p.ORG_PARENT_ID,
+            p.ORG_CODE, p.ORG_TYPE, p.ORG_LEVEL, p.OLD_ID, p.BSFLAG, p.SYSTEMID, p.ACCURACY, p.LATITUDE,
+            p2.org_name as parentOrgName,p.IS_PERIPHERAL
+        from wwp_organization p
+                 left join wwp_organization p2 on p.parent_org_id = p2.org_id
+        where p.ORG_ID = #{orgId,jdbcType=VARCHAR} and p.STATUS=0
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Object">
+        delete from wwp_organization
+        where ORG_ID = #{orgId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.kingyun.gpsinspection.domain.Organization">
+        insert into wwp_organization (ORG_ID, ORG_NAME, ORG_LEVEL_ID,
+                                      PARENT_ORG_ID, ORG_LEADER, ADDRESS,
+                                      POSTCODE, DESCRIPTION, STATUS,
+                                      TEL1, TEL2, FAX, CREATOR_ID,
+                                      CREATE_DT, OPERATE_ID, OPERATE_DT,
+                                      INITIALS, ORDER_NO, IS_VIRTUAL, IS_AUTONOMOUS, SYS_FLAG, ORG_SYS_ID, ORG_PARENT_ID, ORG_CODE, ORG_TYPE,
+                                      ORG_LEVEL, OLD_ID, BSFLAG, SYSTEMID, ACCURACY, LATITUDE
+        )
+        values (#{orgId,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, #{orgLevelId,jdbcType=VARCHAR},
+                #{parentOrgId,jdbcType=VARCHAR}, #{orgLeader,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+                #{postcode,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{status,jdbcType=DECIMAL},
+                #{tel1,jdbcType=VARCHAR}, #{tel2,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, #{creatorId,jdbcType=VARCHAR},
+                to_date(#{createDT},'yyyy-mm-dd hh24:mi'), #{operateId,jdbcType=VARCHAR},
+                to_date(#{operateDT},'yyyy-mm-dd hh24:mi'),
+                #{initials,jdbcType=VARCHAR},#{orderNo,jdbcType=INTEGER},#{isVirtual,jdbcType=VARCHAR},#{isAutonomous,jdbcType=VARCHAR},#{sysFlag,jdbcType=VARCHAR},
+                #{orgSysId,jdbcType=VARCHAR},#{orgParentId,jdbcType=VARCHAR},#{orgCode,jdbcType=VARCHAR},#{orgType,jdbcType=VARCHAR},#{orgLevel,jdbcType=VARCHAR},
+                #{oldId,jdbcType=VARCHAR},#{bsflag,jdbcType=VARCHAR},
+                #{systemid,jdbcType=VARCHAR}, #{accuracy,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}
+               )
+    </insert>
+    <insert id="insertSelective"
+            parameterType="com.kingyun.gpsinspection.domain.Organization">
+        insert into wwp_organization
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">
+                ORG_ID,
+            </if>
+            <if test="orgName != null">
+                ORG_NAME,
+            </if>
+            <if test="orgLevelId != null">
+                ORG_LEVEL_ID,
+            </if>
+            <if test="parentOrgId != null">
+                PARENT_ORG_ID,
+            </if>
+            <if test="orgLeader != null">
+                ORG_LEADER,
+            </if>
+            <if test="address != null">
+                ADDRESS,
+            </if>
+            <if test="postcode != null">
+                POSTCODE,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="tel1 != null">
+                TEL1,
+            </if>
+            <if test="tel2 != null">
+                TEL2,
+            </if>
+            <if test="fax != null">
+                FAX,
+            </if>
+            <if test="creatorId != null">
+                CREATOR_ID,
+            </if>
+            <if test="createDT != null">
+                CREATE_DT,
+            </if>
+            <if test="operateId != null">
+                OPERATE_ID,
+            </if>
+            <if test="operateDT != null">
+                OPERATE_DT,
+            </if>
+            <if test="initials != null">
+                INITIALS,
+            </if>
+            <if test="orderNo != null">
+                ORDER_NO,
+            </if>
+            <if test="isVirtual != null">
+                IS_VIRTUAL,
+            </if>
+            <if test="isAutonomous != null">
+                IS_AUTONOMOUS,
+            </if>
+            <if test="sysFlag != null">
+                SYS_FLAG,
+            </if>
+            <if test="orgSysId != null">
+                ORG_SYS_ID,
+            </if>
+            <if test="orgParentId != null">
+                ORG_PARENT_ID,
+            </if>
+            <if test="orgCode != null">
+                ORG_CODE,
+            </if>
+            <if test="orgType != null">
+                ORG_TYPE,
+            </if>
+            <if test="orgLevel != null">
+                ORG_LEVEL,
+            </if>
+            <if test="oldId != null">
+                OLD_ID,
+            </if>
+            <if test="bsflag != null">
+                BSFLAG,
+            </if>
+            <if test="systemid != null">
+                SYSTEMID,
+            </if>
+            <if test="accuracy != null">
+                ACCURACY,
+            </if>
+            <if test="latitude != null">
+                LATITUDE,
+            </if>
+            <if test="isPeripheral != null">
+                IS_PERIPHERAL,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">
+                #{orgId,jdbcType=VARCHAR},
+            </if>
+            <if test="orgName != null">
+                #{orgName,jdbcType=VARCHAR},
+            </if>
+            <if test="orgLevelId != null">
+                #{orgLevelId,jdbcType=VARCHAR},
+            </if>
+            <if test="parentOrgId != null">
+                #{parentOrgId,jdbcType=VARCHAR},
+            </if>
+            <if test="orgLeader != null">
+                #{orgLeader,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="postcode != null">
+                #{postcode,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=DECIMAL},
+            </if>
+            <if test="tel1 != null">
+                #{tel1,jdbcType=VARCHAR},
+            </if>
+            <if test="tel2 != null">
+                #{tel2,jdbcType=VARCHAR},
+            </if>
+            <if test="fax != null">
+                #{fax,jdbcType=VARCHAR},
+            </if>
+            <if test="creatorId != null">
+                #{creatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="createDT != null">
+                to_date(#{createDT},'yyyy-mm-dd hh24:mi'),
+            </if>
+            <if test="operateId != null">
+                #{operateId,jdbcType=VARCHAR},
+            </if>
+            <if test="operateDT != null">
+                to_date(#{operateDT},'yyyy-mm-dd hh24:mi'),
+            </if>
+            <if test="initials != null">
+                #{initials,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=INTEGER},
+            </if>
+            <if test="isVirtual != null">
+                #{isVirtual,jdbcType=VARCHAR},
+            </if>
+            <if test="isAutonomous != null">
+                #{isAutonomous,jdbcType=VARCHAR},
+            </if>
+            <if test="sysFlag != null">
+                #{sysFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orgSysId != null">
+                #{orgSysId,jdbcType=VARCHAR},
+            </if>
+            <if test="orgParentId != null">
+                #{orgParentId,jdbcType=VARCHAR},
+            </if>
+            <if test="orgCode != null">
+                #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="orgType != null">
+                #{orgType,jdbcType=VARCHAR},
+            </if>
+            <if test="orgLevel != null">
+                #{orgLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="oldId != null">
+                #{oldId,jdbcType=VARCHAR},
+            </if>
+            <if test="bsflag != null">
+                #{bsflag,jdbcType=VARCHAR},
+            </if>
+            <if test="systemid != null">
+                #{systemid,jdbcType=VARCHAR},
+            </if>
+            <if test="accuracy != null">
+                #{accuracy,jdbcType=VARCHAR},
+            </if>
+            <if test="latitude != null">
+                #{latitude,jdbcType=VARCHAR},
+            </if>
+            <if test="isPeripheral != null">
+                #{isPeripheral,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.kingyun.gpsinspection.domain.Organization">
+        update wwp_organization
+        <set>
+            <if test="orgName != null">
+                ORG_NAME = #{orgName,jdbcType=VARCHAR},
+            </if>
+            <if test="orgLevelId != null">
+                ORG_LEVEL_ID = #{orgLevelId,jdbcType=VARCHAR},
+            </if>
+            <if test="parentOrgId != null">
+                PARENT_ORG_ID = #{parentOrgId,jdbcType=VARCHAR},
+            </if>
+            <if test="orgLeader != null">
+                ORG_LEADER = #{orgLeader,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                ADDRESS = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="postcode != null">
+                POSTCODE = #{postcode,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=DECIMAL},
+            </if>
+            <if test="tel1 != null">
+                TEL1 = #{tel1,jdbcType=VARCHAR},
+            </if>
+            <if test="tel2 != null">
+                TEL2 = #{tel2,jdbcType=VARCHAR},
+            </if>
+            <if test="fax != null">
+                FAX = #{fax,jdbcType=VARCHAR},
+            </if>
+            <if test="creatorId != null">
+                CREATOR_ID = #{creatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="createDT != null">
+                CREATE_DT = to_date(#{createDT},'yyyy-mm-dd hh24:mi'),
+            </if>
+            <if test="operateId != null">
+                OPERATE_ID = #{operateId,jdbcType=VARCHAR},
+            </if>
+            <if test="operateDT != null">
+                OPERATE_DT = to_date(#{operateDT},'yyyy-mm-dd hh24:mi'),
+            </if>
+            <if test="initials != null">
+                INITIALS = #{initials,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNo != null">
+                ORDER_NO = #{orderNo,jdbcType=INTEGER},
+            </if>
+            <if test="isVirtual != null">
+                IS_VIRTUAL = #{isVirtual,jdbcType=VARCHAR},
+            </if>
+            <if test="isAutonomous != null">
+                IS_AUTONOMOUS = #{isAutonomous,jdbcType=VARCHAR},
+            </if>
+            <if test="sysFlag != null">
+                SYS_FLAG = #{sysFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orgSysId != null">
+                ORG_SYS_ID = #{orgSysId,jdbcType=VARCHAR},
+            </if>
+            <if test="orgParentId != null">
+                ORG_PARENT_ID = #{orgParentId,jdbcType=VARCHAR},
+            </if>
+            <if test="orgCode != null">
+                ORG_CODE = #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="orgType != null">
+                ORG_TYPE = #{orgType,jdbcType=VARCHAR},
+            </if>
+            <if test="orgType != null">
+                ORG_LEVEL = #{orgLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="oldId != null">
+                OLD_ID = #{oldId,jdbcType=VARCHAR},
+            </if>
+            <if test="bsflag != null">
+                BSFLAG = #{bsflag,jdbcType=VARCHAR},
+            </if>
+            <if test="systemid != null">
+                SYSTEMID = #{systemid,jdbcType=VARCHAR},
+            </if>
+            <if test="accuracy != null">
+                ACCURACY = #{accuracy,jdbcType=VARCHAR},
+            </if>
+            <if test="latitude != null">
+                LATITUDE = #{latitude,jdbcType=VARCHAR},
+            </if>
+            <if test="isPeripheral != null">
+                IS_PERIPHERAL = #{isPeripheral,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ORG_ID = #{orgId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.kingyun.gpsinspection.domain.Organization">
+        update wwp_organization
+        set ORG_NAME = #{orgName,jdbcType=VARCHAR},
+            ORG_LEVEL_ID = #{orgLevelId,jdbcType=VARCHAR},
+            PARENT_ORG_ID = #{parentOrgId,jdbcType=VARCHAR},
+            ORG_LEADER = #{orgLeader,jdbcType=VARCHAR},
+            ADDRESS = #{address,jdbcType=VARCHAR},
+            POSTCODE = #{postcode,jdbcType=VARCHAR},
+            DESCRIPTION = #{description,jdbcType=VARCHAR},
+            STATUS = #{status,jdbcType=DECIMAL},
+            TEL1 = #{tel1,jdbcType=VARCHAR},
+            TEL2 = #{tel2,jdbcType=VARCHAR},
+            FAX = #{fax,jdbcType=VARCHAR},
+            OPERATE_ID = #{operateId,jdbcType=VARCHAR},
+            OPERATE_DT = to_date(#{operateDT},'yyyy-mm-dd hh24:mi'),
+            INITIALS = #{initials,jdbcType=VARCHAR},
+            ORDER_NO = #{orderNo,jdbcType=INTEGER},
+            IS_VIRTUAL = #{isVirtual,jdbcType=VARCHAR},
+            IS_AUTONOMOUS = #{isAutonomous,jdbcType=VARCHAR},
+            SYS_FLAG = #{sysFlag,jdbcType=VARCHAR},
+            ORG_SYS_ID = #{orgSysId,jdbcType=VARCHAR},
+            ORG_PARENT_ID = #{orgParentId,jdbcType=VARCHAR},
+            ORG_CODE = #{orgCode,jdbcType=VARCHAR},
+            ORG_TYPE = #{orgType,jdbcType=VARCHAR},
+            ORG_LEVEL = #{orgLevel,jdbcType=VARCHAR},
+            OLD_ID = #{oldId,jdbcType=VARCHAR},
+            BSFLAG = #{bsflag,jdbcType=VARCHAR},
+            SYSTEMID = #{systemid,jdbcType=VARCHAR},
+            ACCURACY = #{accuracy,jdbcType=VARCHAR},
+            LATITUDE = #{latitude,jdbcType=VARCHAR},
+            IS_PERIPHERAL = #{isPeripheral,jdbcType=VARCHAR}
+        where ORG_ID = #{orgId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectOrgLevels" resultMap="orgLevelMap">
+        select
+        <include refid="OrgLevel_Column_List"/>
+        from WWP_ORG_LEVEL where STATE=0
+    </select>
+    <select id="selectOrgLevelsByIndex" resultMap="orgLevelMap" parameterType="java.lang.String">
+        select
+        <include refid="OrgLevel_Column_List"/>
+        from WWP_ORG_LEVEL where STATE=0 and ORG_LEVEL_ID &gt;=#{index,jdbcType=VARCHAR}
+    </select>
+    <insert id="insertList" parameterType="java.util.List">
+        insert into wwp_organization (ORG_ID, ORG_NAME, ORG_LEVEL_ID,
+        PARENT_ORG_ID, ORG_LEADER, ADDRESS,
+        POSTCODE, DESCRIPTION, STATUS,
+        TEL1, TEL2, FAX, CREATOR_ID,
+        CREATE_DT, OPERATE_ID, OPERATE_DT,
+        INITIALS, ORDER_NO, IS_VIRTUAL, IS_AUTONOMOUS, SYS_FLAG, ORG_SYS_ID, ORG_PARENT_ID, ORG_CODE, ORG_TYPE,
+        ORG_LEVEL,
+        OLD_ID, BSFLAG, SYSTEMID,ACCURACY,LATITUDE
+        )
+        <foreach collection="list" item="item" index="index" separator="union all">
+            SELECT
+            #{item.orgId,jdbcType=VARCHAR}, #{item.orgName,jdbcType=VARCHAR}, #{item.orgLevelId,jdbcType=VARCHAR},
+            #{item.parentOrgId,jdbcType=VARCHAR}, #{item.orgLeader,jdbcType=VARCHAR}, #{item.address,jdbcType=VARCHAR},
+            #{item.postcode,jdbcType=VARCHAR}, #{item.description,jdbcType=VARCHAR}, #{item.status,jdbcType=DECIMAL},
+            #{item.tel1,jdbcType=VARCHAR}, #{item.tel2,jdbcType=VARCHAR}, #{item.fax,jdbcType=VARCHAR},
+            #{item.creatorId,jdbcType=VARCHAR},
+            to_date(#{item.createDT},'yyyy-mm-dd hh24:mi'), #{item.operateId,jdbcType=VARCHAR},
+            to_date(#{item.operateDT},'yyyy-mm-dd hh24:mi'),
+            #{item.initials,jdbcType=VARCHAR},#{item.orderNo,jdbcType=INTEGER},#{item.isVirtual,jdbcType=VARCHAR},#{item.isAutonomous,jdbcType=VARCHAR},#{item.sysFlag,jdbcType=VARCHAR},
+            #{item.orgSysId,jdbcType=VARCHAR},#{item.orgParentId,jdbcType=VARCHAR},#{item.orgCode,jdbcType=VARCHAR},#{item.orgType,jdbcType=VARCHAR},#{item.orgLevel,jdbcType=VARCHAR},
+            #{item.oldId,jdbcType=VARCHAR}, #{item.bsflag,jdbcType=VARCHAR}, #{item.systemid,jdbcType=VARCHAR},
+            #{item.accuracy,jdbcType=VARCHAR}, #{item.latitude,jdbcType=VARCHAR}
+            FROM dual
+        </foreach>
+    </insert>
+
+    <update id="updateList" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            UPDATE wwp_organization
+            <set>
+                <if test="item.orgName != null">
+                    ORG_NAME = #{item.orgName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.orgLevelId != null">
+                    ORG_LEVEL_ID = #{item.orgLevelId,jdbcType=VARCHAR},
+                </if>
+                <if test="item.parentOrgId != null">
+                    PARENT_ORG_ID = #{item.parentOrgId,jdbcType=VARCHAR},
+                </if>
+                <if test="item.orgLeader != null">
+                    ORG_LEADER = #{item.orgLeader,jdbcType=VARCHAR},
+                </if>
+                <if test="item.address != null">
+                    ADDRESS = #{item.address,jdbcType=VARCHAR},
+                </if>
+                <if test="item.postcode != null">
+                    POSTCODE = #{item.postcode,jdbcType=VARCHAR},
+                </if>
+                <if test="item.description != null">
+                    DESCRIPTION = #{item.description,jdbcType=VARCHAR},
+                </if>
+                <if test="item.tel1 != null">
+                    TEL1 = #{item.tel1,jdbcType=VARCHAR},
+                </if>
+                <if test="item.tel2 != null">
+                    TEL2 = #{item.tel2,jdbcType=VARCHAR},
+                </if>
+                <if test="item.fax != null">
+                    FAX = #{item.fax,jdbcType=VARCHAR},
+                </if>
+                <if test="item.operateId != null">
+                    OPERATE_ID = #{item.operateId,jdbcType=VARCHAR},
+                </if>
+                <if test="item.operateDT != null">
+                    OPERATE_DT = to_date(#{item.operateDT},'yyyy-mm-dd hh24:mi'),
+                </if>
+                <if test="item.initials != null">
+                    INITIALS = #{item.initials,jdbcType=VARCHAR},
+                </if>
+                <if test="item.orderNo != null">
+                    ORDER_NO = #{item.orderNo,jdbcType=INTEGER},
+                </if>
+                <if test="item.isVirtual != null">
+                    IS_VIRTUAL = #{item.isVirtual,jdbcType=VARCHAR},
+                </if>
+                <if test="item.isAutonomous != null">
+                    IS_AUTONOMOUS = #{item.isAutonomous,jdbcType=VARCHAR},
+                </if>
+                <if test="item.sysFlag != null">
+                    SYS_FLAG = #{item.sysFlag,jdbcType=VARCHAR},
+                </if>
+                <if test="item.orgSysId != null">
+                    ORG_SYS_ID = #{item.orgSysId,jdbcType=VARCHAR},
+                </if>
+                <if test="item.orgParentId != null">
+                    ORG_PARENT_ID = #{item.orgParentId,jdbcType=VARCHAR},
+                </if>
+                <if test="item.orgCode != null">
+                    ORG_CODE = #{item.orgCode,jdbcType=VARCHAR},
+                </if>
+                <if test="item.orgType != null">
+                    ORG_TYPE = #{item.orgType,jdbcType=VARCHAR},
+                </if>
+                <if test="item.orgLevel != null">
+                    ORG_LEVEL = #{item.orgLevel,jdbcType=VARCHAR},
+                </if>
+                <if test="item.oldId != null">
+                    OLD_ID = #{item.oldId,jdbcType=VARCHAR},
+                </if>
+                <if test="item.bsflag != null">
+                    BSFLAG = #{item.bsflag,jdbcType=VARCHAR},
+                </if>
+                <if test="item.systemid != null">
+                    SYSTEMID = #{item.systemid,jdbcType=VARCHAR},
+                </if>
+                <if test="item.accuracy != null">
+                    ACCURACY = #{item.accuracy,jdbcType=VARCHAR},
+                </if>
+                <if test="item.latitude != null">
+                    LATITUDE = #{item.latitude,jdbcType=VARCHAR}
+                </if>
+            </set>
+            WHERE ORG_ID = #{item.orgId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <delete id="deleteList" parameterType="java.util.List">
+        update wwp_organization set STATUS = 1
+        WHERE ORG_ID in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.orgId,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+
+    <select id="selectOrgListByEmployee"
+            resultMap="BaseResultMap"
+            parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from wwp_organization
+        where org_level_id between #{maxLevel} and #{lessLevel} AND STATUS = 0
+        start with org_id = #{orgId}
+        connect by prior org_id = parent_org_id
+        order by nlssort(ORG_NAME,'NLS_SORT=SCHINESE_PINYIN_M' ) asc
+    </select>
+
+    <select id="getOrgPorperties" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT O.*
+        FROM WWP_ORGANIZATION O
+        WHERE O.ORG_LEVEL_ID IN ('4', '5')
+          AND (EXISTS
+                   (SELECT A.DEVICE_PROPERTY_ID
+                    FROM (SELECT EP.* FROM WWP_ENTITY_PROPERTY EP WHERE EP.STATUS = 0) A
+                    WHERE A.ENTITY_ID = O.ORG_ID) OR EXISTS
+                   (SELECT A.DEVICE_PROPERTY_ID
+                    FROM (SELECT EP.* FROM WWP_ENTITY_PROPERTY EP WHERE EP.STATUS = 0) A
+                    WHERE A.ENTITY_ID IN
+                          (SELECT WE.ENTITY_ID
+                           FROM WWP_ENTITY WE
+                           WHERE WE.PARENT_ORG_ID IN
+                                 (SELECT ORG_ID
+                                  FROM WWP_ORGANIZATION
+                                           START WITH ORG_ID = O.ORG_ID
+                    CONNECT BY PRIOR ORG_ID = PARENT_ORG_ID))))
+            START WITH O.PARENT_ORG_ID = #{orgId,jdbcType=VARCHAR}
+        CONNECT BY PRIOR O.ORG_ID = O.PARENT_ORG_ID
+    </select>
+
+    <select id="selectUpByTree" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wwp_organization
+        where status = 0
+            start with org_id= #{orgId,jdbcType=VARCHAR}
+        connect by prior parent_org_id=org_id
+    </select>
+
+    <select id="selectDownByTree" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wwp_organization
+        where status = 0
+            start with org_id= #{orgId,jdbcType=VARCHAR}
+        connect by parent_org_id= prior org_id
+    </select>
+    <select id="selectDownByTreeWithoutPipelineWell" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wwp_organization t
+        where <![CDATA[ t.org_level_id < 5 ]]>
+        start with org_id= #{orgId,jdbcType=VARCHAR}
+        connect by parent_org_id= prior org_id
+    </select>
+
+    <select id="getUserOrgId" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT B.ORG_ID
+        FROM (SELECT A.*
+              FROM WWP_ORGANIZATION A
+                  START WITH A.ORG_ID =  #{orgId,jdbcType=VARCHAR}
+              CONNECT BY PRIOR A.PARENT_ORG_ID = A.ORG_ID) B
+        WHERE B.ORG_LEVEL_ID = '3'
+    </select>
+    <select id="selectBottomToTopOrgList" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from wwp_organization
+        where org_level_id between #{bottomLevel} and 100 AND STATUS = 0
+        start with org_id = #{orgId}
+        connect by prior parent_org_id = org_id
+        order by to_number(org_level_id), nlssort(ORG_NAME,'NLS_SORT=SCHINESE_PINYIN_M' ) asc
+    </select>
+    <!--获取矿级机关数据-->
+    <select id="getUserOrgParentId" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT B.ORG_ID
+        FROM (SELECT A.*
+              FROM WWP_ORGANIZATION A
+                  START WITH A.ORG_ID =  #{orgId,jdbcType=VARCHAR}
+              CONNECT BY PRIOR A.PARENT_ORG_ID = A.ORG_ID) B
+        WHERE B.ORG_LEVEL_ID = '2'
+    </select>
+
+    <select id="queryPmZtrees" resultMap="BaseResultMap">
+        SELECT A.*,(SELECT COUNT(1) FROM WWP_ORGANIZATION WHERE PARENT_ORG_ID = A.ORG_ID)CHILD
+        FROM WWP_ORGANIZATION A
+        WHERE A.ORG_LEVEL_ID BETWEEN 1 AND 3
+          AND A.STATUS = 0
+            START WITH A.ORG_ID = 'XNJV3M3kqvjkKjumoBm5Yup5562SCJD'
+        CONNECT BY PRIOR A.ORG_ID = A.PARENT_ORG_ID
+    </select>
+
+    <select id="querySmZtrees" resultMap="BaseResultMap">
+        SELECT A.*,(SELECT COUNT(1) FROM WWP_ORGANIZATION WHERE PARENT_ORG_ID = A.ORG_ID)CHILD
+        FROM WWP_ORGANIZATION A
+        WHERE A.ORG_LEVEL_ID BETWEEN 1 AND 2
+          AND A.STATUS = 0
+            START WITH A.ORG_ID = 'XNJV3M3kqvjkKjumoBm5Yup5562JLDW'
+        CONNECT BY PRIOR A.ORG_ID = A.PARENT_ORG_ID
+    </select>
+
+    <select id="queryByChancesPipeLineBuiding" resultMap="BaseResultMap">
+        select DISTINCT o.ORG_ID, o.ORG_NAME from wwp_organization o
+                                                      join chances_pipelines c on o.org_id=c.org_id
+        where c.enabled_mark=0 and c.delete_mark=0 and o.org_level_id=3 AND  c.pipe_state=2
+    </select>
+
+    <select id="queryUpOrg" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select t.*
+        from wwp_organization t
+        where t.status = 0
+          and t.org_level_id = 1
+          and t.org_id != '#'
+        start with t.org_id = #{orgId}
+        connect by prior t.parent_org_id = t.org_id
+    </select>
+
+    <select id="queryRoot" resultMap="BaseResultMap">
+        select t.*
+        from wwp_organization t
+        where t.status = 0
+            and t.org_id = 'XNJV3M3kqvjkKjumoBm5Yup5562SCJD'
+           or t.org_id = 'XNJV3M3kqvjkKjumoBm5Yup5562JLDW'
+    </select>
+
+    <select id="queryRootItem" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select t.*
+        from wwp_organization t
+        where t.status = 0
+          and t.parent_org_id = #{orgId}
+    </select>
+
+    <select id="queryAllOperationArea" resultMap="BaseResultMap">
+        select og.org_id, og.org_name
+        from wwp_organization og
+        where og.parent_org_id = 'XN8AiynNee5jLhi1rMqzvpUmyzKMDsiq'
+          and og.status = 0
+    </select>
+</mapper>

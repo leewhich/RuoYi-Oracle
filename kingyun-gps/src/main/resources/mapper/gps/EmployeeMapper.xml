@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingyun.gpsinspection.mapper.EmployeeMapper">
+    
+    <resultMap type="Employee" id="EmployeeResult">
+        <result property="employeeId"    column="employee_id"    />
+        <result property="postId"    column="post_id"    />
+        <result property="name"    column="name"    />
+        <result property="sex"    column="sex"    />
+        <result property="operatorId"    column="operator_id"    />
+        <result property="workNumber"    column="work_number"    />
+        <result property="enrollDate"    column="enroll_date"    />
+        <result property="birthday"    column="birthday"    />
+        <result property="cardId"    column="card_id"    />
+        <result property="portraitCode"    column="portrait_code"    />
+        <result property="mobilePhone"    column="mobile_phone"    />
+        <result property="officeTel"    column="office_tel"    />
+        <result property="address"    column="address"    />
+        <result property="postcode"    column="postcode"    />
+        <result property="qqid"    column="qqid"    />
+        <result property="email"    column="email"    />
+        <result property="emgContactPerson"    column="emg_contact_person"    />
+        <result property="emgContactTel"    column="emg_contact_tel"    />
+        <result property="description"    column="description"    />
+        <result property="status"    column="status"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="modifierId"    column="modifier_id"    />
+        <result property="modifyTime"    column="modify_time"    />
+        <result property="loginId"    column="login_id"    />
+        <result property="password"    column="password"    />
+        <result property="bsflag"    column="bsflag"    />
+        <result property="language"    column="language"    />
+        <result property="skinName"    column="skin_name"    />
+        <result property="domainType"    column="domain_type"    />
+        <result property="userType"    column="user_type"    />
+        <result property="lastLoginTime"    column="last_login_time"    />
+        <result property="thisLoginTime"    column="this_login_time"    />
+        <result property="loginIp"    column="login_ip"    />
+        <result property="token"    column="token"    />
+        <result property="depId"    column="dep_id"    />
+        <result property="orgId"    column="org_id"    />
+        <result property="workSpeciesId"    column="work_species_id"    />
+        <result property="isPeripheral"    column="is_peripheral"    />
+        <result property="engDetailId"    column="eng_detail_id"    />
+        <result property="enableMark"    column="enable_mark"    />
+    </resultMap>
+
+    <sql id="selectEmployeeVo">
+        select employee_id, post_id, name, sex, operator_id, work_number, enroll_date, birthday, card_id, portrait_code, mobile_phone, office_tel, address, postcode, qqid, email, emg_contact_person, emg_contact_tel, description, status, creator_id, create_time, modifier_id, modify_time, login_id, password, bsflag, language, skin_name, domain_type, user_type, last_login_time, this_login_time, login_ip, token, dep_id, org_id, work_species_id, is_peripheral, eng_detail_id, enable_mark from wwp_employee
+    </sql>
+
+    <select id="selectEmployeeList" parameterType="Employee" resultMap="EmployeeResult">
+        <include refid="selectEmployeeVo"/>
+        <where>  
+            <if test="postId != null  and postId != ''"> and post_id = #{postId}</if>
+            <if test="name != null "> and name like concat(concat('%', #{name}), '%')</if>
+            <if test="sex != null "> and sex = #{sex}</if>
+            <if test="operatorId != null  and operatorId != ''"> and operator_id = #{operatorId}</if>
+            <if test="workNumber != null  and workNumber != ''"> and work_number = #{workNumber}</if>
+            <if test="enrollDate != null "> and enroll_date = #{enrollDate}</if>
+            <if test="birthday != null "> and birthday = #{birthday}</if>
+            <if test="cardId != null  and cardId != ''"> and card_id = #{cardId}</if>
+            <if test="portraitCode != null  and portraitCode != ''"> and portrait_code = #{portraitCode}</if>
+            <if test="mobilePhone != null  and mobilePhone != ''"> and mobile_phone = #{mobilePhone}</if>
+            <if test="officeTel != null  and officeTel != ''"> and office_tel = #{officeTel}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="postcode != null  and postcode != ''"> and postcode = #{postcode}</if>
+            <if test="qqid != null  and qqid != ''"> and qqid = #{qqid}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="emgContactPerson != null  and emgContactPerson != ''"> and emg_contact_person = #{emgContactPerson}</if>
+            <if test="emgContactTel != null  and emgContactTel != ''"> and emg_contact_tel = #{emgContactTel}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="creatorId != null  and creatorId != ''"> and creator_id = #{creatorId}</if>
+            <if test="modifierId != null  and modifierId != ''"> and modifier_id = #{modifierId}</if>
+            <if test="modifyTime != null "> and modify_time = #{modifyTime}</if>
+            <if test="loginId != null  and loginId != ''"> and login_id = #{loginId}</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="bsflag != null  and bsflag != ''"> and bsflag = #{bsflag}</if>
+            <if test="language != null  and language != ''"> and language = #{language}</if>
+            <if test="skinName != null  and skinName != ''"> and skin_name like concat(concat('%', #{skinName}), '%')</if>
+            <if test="domainType != null  and domainType != ''"> and domain_type = #{domainType}</if>
+            <if test="userType != null  and userType != ''"> and user_type = #{userType}</if>
+            <if test="lastLoginTime != null "> and last_login_time = #{lastLoginTime}</if>
+            <if test="thisLoginTime != null "> and this_login_time = #{thisLoginTime}</if>
+            <if test="loginIp != null  and loginIp != ''"> and login_ip = #{loginIp}</if>
+            <if test="token != null  and token != ''"> and token = #{token}</if>
+            <if test="depId != null  and depId != ''"> and dep_id = #{depId}</if>
+            <if test="orgId != null  and orgId != ''"> and org_id = #{orgId}</if>
+            <if test="workSpeciesId != null  and workSpeciesId != ''"> and work_species_id = #{workSpeciesId}</if>
+            <if test="isPeripheral != null "> and is_peripheral = #{isPeripheral}</if>
+            <if test="engDetailId != null  and engDetailId != ''"> and eng_detail_id = #{engDetailId}</if>
+            <if test="enableMark != null "> and enable_mark = #{enableMark}</if>
+        </where>
+    </select>
+    
+    <select id="selectEmployeeByEmployeeId" parameterType="String" resultMap="EmployeeResult">
+        <include refid="selectEmployeeVo"/>
+        where employee_id = #{employeeId}
+    </select>
+        
+    <insert id="insertEmployee" parameterType="Employee">
+        <selectKey keyProperty="employeeId" resultType="long" order="BEFORE">
+            SELECT seq_wwp_employee.NEXTVAL as employeeId FROM DUAL
+        </selectKey>
+        insert into wwp_employee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="employeeId != null">employee_id,</if>
+            <if test="postId != null">post_id,</if>
+            <if test="name != null">name,</if>
+            <if test="sex != null">sex,</if>
+            <if test="operatorId != null">operator_id,</if>
+            <if test="workNumber != null">work_number,</if>
+            <if test="enrollDate != null">enroll_date,</if>
+            <if test="birthday != null">birthday,</if>
+            <if test="cardId != null">card_id,</if>
+            <if test="portraitCode != null">portrait_code,</if>
+            <if test="mobilePhone != null">mobile_phone,</if>
+            <if test="officeTel != null">office_tel,</if>
+            <if test="address != null">address,</if>
+            <if test="postcode != null">postcode,</if>
+            <if test="qqid != null">qqid,</if>
+            <if test="email != null">email,</if>
+            <if test="emgContactPerson != null">emg_contact_person,</if>
+            <if test="emgContactTel != null">emg_contact_tel,</if>
+            <if test="description != null">description,</if>
+            <if test="status != null">status,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="modifierId != null">modifier_id,</if>
+            <if test="modifyTime != null">modify_time,</if>
+            <if test="loginId != null">login_id,</if>
+            <if test="password != null">password,</if>
+            <if test="bsflag != null">bsflag,</if>
+            <if test="language != null">language,</if>
+            <if test="skinName != null">skin_name,</if>
+            <if test="domainType != null">domain_type,</if>
+            <if test="userType != null">user_type,</if>
+            <if test="lastLoginTime != null">last_login_time,</if>
+            <if test="thisLoginTime != null">this_login_time,</if>
+            <if test="loginIp != null">login_ip,</if>
+            <if test="token != null">token,</if>
+            <if test="depId != null">dep_id,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="workSpeciesId != null">work_species_id,</if>
+            <if test="isPeripheral != null">is_peripheral,</if>
+            <if test="engDetailId != null">eng_detail_id,</if>
+            <if test="enableMark != null">enable_mark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="employeeId != null">#{employeeId},</if>
+            <if test="postId != null">#{postId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="operatorId != null">#{operatorId},</if>
+            <if test="workNumber != null">#{workNumber},</if>
+            <if test="enrollDate != null">#{enrollDate},</if>
+            <if test="birthday != null">#{birthday},</if>
+            <if test="cardId != null">#{cardId},</if>
+            <if test="portraitCode != null">#{portraitCode},</if>
+            <if test="mobilePhone != null">#{mobilePhone},</if>
+            <if test="officeTel != null">#{officeTel},</if>
+            <if test="address != null">#{address},</if>
+            <if test="postcode != null">#{postcode},</if>
+            <if test="qqid != null">#{qqid},</if>
+            <if test="email != null">#{email},</if>
+            <if test="emgContactPerson != null">#{emgContactPerson},</if>
+            <if test="emgContactTel != null">#{emgContactTel},</if>
+            <if test="description != null">#{description},</if>
+            <if test="status != null">#{status},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="modifierId != null">#{modifierId},</if>
+            <if test="modifyTime != null">#{modifyTime},</if>
+            <if test="loginId != null">#{loginId},</if>
+            <if test="password != null">#{password},</if>
+            <if test="bsflag != null">#{bsflag},</if>
+            <if test="language != null">#{language},</if>
+            <if test="skinName != null">#{skinName},</if>
+            <if test="domainType != null">#{domainType},</if>
+            <if test="userType != null">#{userType},</if>
+            <if test="lastLoginTime != null">#{lastLoginTime},</if>
+            <if test="thisLoginTime != null">#{thisLoginTime},</if>
+            <if test="loginIp != null">#{loginIp},</if>
+            <if test="token != null">#{token},</if>
+            <if test="depId != null">#{depId},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="workSpeciesId != null">#{workSpeciesId},</if>
+            <if test="isPeripheral != null">#{isPeripheral},</if>
+            <if test="engDetailId != null">#{engDetailId},</if>
+            <if test="enableMark != null">#{enableMark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEmployee" parameterType="Employee">
+        update wwp_employee
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="operatorId != null">operator_id = #{operatorId},</if>
+            <if test="workNumber != null">work_number = #{workNumber},</if>
+            <if test="enrollDate != null">enroll_date = #{enrollDate},</if>
+            <if test="birthday != null">birthday = #{birthday},</if>
+            <if test="cardId != null">card_id = #{cardId},</if>
+            <if test="portraitCode != null">portrait_code = #{portraitCode},</if>
+            <if test="mobilePhone != null">mobile_phone = #{mobilePhone},</if>
+            <if test="officeTel != null">office_tel = #{officeTel},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="postcode != null">postcode = #{postcode},</if>
+            <if test="qqid != null">qqid = #{qqid},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="emgContactPerson != null">emg_contact_person = #{emgContactPerson},</if>
+            <if test="emgContactTel != null">emg_contact_tel = #{emgContactTel},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="modifierId != null">modifier_id = #{modifierId},</if>
+            <if test="modifyTime != null">modify_time = #{modifyTime},</if>
+            <if test="loginId != null">login_id = #{loginId},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="bsflag != null">bsflag = #{bsflag},</if>
+            <if test="language != null">language = #{language},</if>
+            <if test="skinName != null">skin_name = #{skinName},</if>
+            <if test="domainType != null">domain_type = #{domainType},</if>
+            <if test="userType != null">user_type = #{userType},</if>
+            <if test="lastLoginTime != null">last_login_time = #{lastLoginTime},</if>
+            <if test="thisLoginTime != null">this_login_time = #{thisLoginTime},</if>
+            <if test="loginIp != null">login_ip = #{loginIp},</if>
+            <if test="token != null">token = #{token},</if>
+            <if test="depId != null">dep_id = #{depId},</if>
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="workSpeciesId != null">work_species_id = #{workSpeciesId},</if>
+            <if test="isPeripheral != null">is_peripheral = #{isPeripheral},</if>
+            <if test="engDetailId != null">eng_detail_id = #{engDetailId},</if>
+            <if test="enableMark != null">enable_mark = #{enableMark},</if>
+        </trim>
+        where employee_id = #{employeeId}
+    </update>
+
+    <delete id="deleteEmployeeByEmployeeId" parameterType="String">
+        delete from wwp_employee where employee_id = #{employeeId}
+    </delete>
+
+    <delete id="deleteEmployeeByEmployeeIds" parameterType="String">
+        delete from wwp_employee where employee_id in 
+        <foreach item="employeeId" collection="array" open="(" separator="," close=")">
+            #{employeeId}
+        </foreach>
+    </delete>
+</mapper>

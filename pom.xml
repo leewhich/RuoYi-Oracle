@@ -3,16 +3,16 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ruoyi</groupId>
-    <artifactId>ruoyi</artifactId>
-    <version>4.7.7</version>
+    <groupId>com.kingyun</groupId>
+    <artifactId>gpsinspection</artifactId>
+    <version>${kingyun.version}</version>
 
-    <name>ruoyi</name>
-    <url>http://www.ruoyi.vip</url>
-    <description>若依管理系统</description>
-    
+    <name>gpsinspection</name>
+    <url>http://www.kingyun.net</url>
+    <description>gps管道管理系统</description>
+
     <properties>
-        <ruoyi.version>4.7.7</ruoyi.version>
+        <kingyun.version>0.0.1</kingyun.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
@@ -30,12 +30,13 @@
         <poi.version>4.1.2</poi.version>
         <velocity.version>2.3</velocity.version>
         <oracle.version>10.2.0.4.0</oracle.version>
+        <hutool-all.version>5.8.11</hutool-all.version>
     </properties>
 
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
-        
+
             <!-- SpringBoot的依赖配置-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -44,14 +45,14 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            
+
             <!-- 阿里数据库连接池 -->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid.version}</version>
             </dependency>
-            
+
             <!-- 验证码 -->
             <dependency>
                 <groupId>pro.fessional</groupId>
@@ -149,51 +150,66 @@
                 <version>${fastjson.version}</version>
             </dependency>
 
+            <!-- hutool工具类 -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
+            </dependency>
+
             <!-- 定时任务-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-quartz</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.kingyun</groupId>
+                <artifactId>kingyun-quartz</artifactId>
+                <version>${kingyun.version}</version>
             </dependency>
 
             <!-- 代码生成-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-generator</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.kingyun</groupId>
+                <artifactId>kingyun-generator</artifactId>
+                <version>${kingyun.version}</version>
             </dependency>
 
             <!-- 核心模块-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-framework</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.kingyun</groupId>
+                <artifactId>kingyun-framework</artifactId>
+                <version>${kingyun.version}</version>
             </dependency>
 
             <!-- 系统模块-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-system</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.kingyun</groupId>
+                <artifactId>kingyun-system</artifactId>
+                <version>${kingyun.version}</version>
             </dependency>
 
             <!-- 通用工具-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-common</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.kingyun</groupId>
+                <artifactId>kingyun-common</artifactId>
+                <version>${kingyun.version}</version>
+            </dependency>
+
+            <!-- gps模块-->
+            <dependency>
+                <groupId>com.kingyun</groupId>
+                <artifactId>kingyun-gps</artifactId>
+                <version>${kingyun.version}</version>
             </dependency>
 
         </dependencies>
     </dependencyManagement>
 
     <modules>
-        <module>ruoyi-admin</module>
-        <module>ruoyi-framework</module>
-        <module>ruoyi-system</module>
-        <module>ruoyi-quartz</module>
-        <module>ruoyi-generator</module>
-        <module>ruoyi-common</module>
+        <module>kingyun-admin</module>
+        <module>kingyun-framework</module>
+        <module>kingyun-system</module>
+        <module>kingyun-quartz</module>
+        <module>kingyun-generator</module>
+        <module>kingyun-common</module>
+        <module>kingyun-gps</module>
     </modules>
     <packaging>pom</packaging>
 

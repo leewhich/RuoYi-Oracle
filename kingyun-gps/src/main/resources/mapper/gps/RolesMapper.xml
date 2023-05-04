@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingyun.gpsinspection.mapper.RolesMapper">
+    
+    <resultMap type="Roles" id="RolesResult">
+        <result property="roleId"    column="role_id"    />
+        <result property="roleName"    column="role_name"    />
+        <result property="roleDesc"    column="role_desc"    />
+        <result property="parentRoleId"    column="parent_role_id"    />
+        <result property="roleType"    column="role_type"    />
+        <result property="systemCode"    column="system_code"    />
+        <result property="state"    column="state"    />
+        <result property="creator"    column="creator"    />
+        <result property="createtime"    column="createtime"    />
+        <result property="modifyer"    column="modifyer"    />
+        <result property="modifytime"    column="modifytime"    />
+        <result property="roleLevel"    column="role_level"    />
+        <result property="memo"    column="memo"    />
+        <result property="orgId"    column="org_id"    />
+    </resultMap>
+
+    <sql id="selectRolesVo">
+        select role_id, role_name, role_desc, parent_role_id, role_type, system_code, state, creator, createtime, modifyer, modifytime, role_level, memo, org_id from wwp_roles
+    </sql>
+
+    <select id="selectRolesList" parameterType="Roles" resultMap="RolesResult">
+        <include refid="selectRolesVo"/>
+        <where>  
+            <if test="roleName != null  and roleName != ''"> and role_name like concat(concat('%', #{roleName}), '%')</if>
+            <if test="roleDesc != null  and roleDesc != ''"> and role_desc = #{roleDesc}</if>
+            <if test="parentRoleId != null  and parentRoleId != ''"> and parent_role_id = #{parentRoleId}</if>
+            <if test="roleType != null "> and role_type = #{roleType}</if>
+            <if test="systemCode != null  and systemCode != ''"> and system_code = #{systemCode}</if>
+            <if test="state != null "> and state = #{state}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+            <if test="createtime != null "> and createtime = #{createtime}</if>
+            <if test="modifyer != null  and modifyer != ''"> and modifyer = #{modifyer}</if>
+            <if test="modifytime != null "> and modifytime = #{modifytime}</if>
+            <if test="roleLevel != null  and roleLevel != ''"> and role_level = #{roleLevel}</if>
+            <if test="memo != null  and memo != ''"> and memo = #{memo}</if>
+            <if test="orgId != null  and orgId != ''"> and org_id = #{orgId}</if>
+        </where>
+    </select>
+    
+    <select id="selectRolesByRoleId" parameterType="String" resultMap="RolesResult">
+        <include refid="selectRolesVo"/>
+        where role_id = #{roleId}
+    </select>
+        
+    <insert id="insertRoles" parameterType="Roles">
+        <selectKey keyProperty="roleId" resultType="long" order="BEFORE">
+            SELECT seq_wwp_roles.NEXTVAL as roleId FROM DUAL
+        </selectKey>
+        insert into wwp_roles
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">role_id,</if>
+            <if test="roleName != null">role_name,</if>
+            <if test="roleDesc != null">role_desc,</if>
+            <if test="parentRoleId != null">parent_role_id,</if>
+            <if test="roleType != null">role_type,</if>
+            <if test="systemCode != null">system_code,</if>
+            <if test="state != null">state,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createtime != null">createtime,</if>
+            <if test="modifyer != null">modifyer,</if>
+            <if test="modifytime != null">modifytime,</if>
+            <if test="roleLevel != null">role_level,</if>
+            <if test="memo != null">memo,</if>
+            <if test="orgId != null">org_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">#{roleId},</if>
+            <if test="roleName != null">#{roleName},</if>
+            <if test="roleDesc != null">#{roleDesc},</if>
+            <if test="parentRoleId != null">#{parentRoleId},</if>
+            <if test="roleType != null">#{roleType},</if>
+            <if test="systemCode != null">#{systemCode},</if>
+            <if test="state != null">#{state},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createtime != null">#{createtime},</if>
+            <if test="modifyer != null">#{modifyer},</if>
+            <if test="modifytime != null">#{modifytime},</if>
+            <if test="roleLevel != null">#{roleLevel},</if>
+            <if test="memo != null">#{memo},</if>
+            <if test="orgId != null">#{orgId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRoles" parameterType="Roles">
+        update wwp_roles
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roleName != null">role_name = #{roleName},</if>
+            <if test="roleDesc != null">role_desc = #{roleDesc},</if>
+            <if test="parentRoleId != null">parent_role_id = #{parentRoleId},</if>
+            <if test="roleType != null">role_type = #{roleType},</if>
+            <if test="systemCode != null">system_code = #{systemCode},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createtime != null">createtime = #{createtime},</if>
+            <if test="modifyer != null">modifyer = #{modifyer},</if>
+            <if test="modifytime != null">modifytime = #{modifytime},</if>
+            <if test="roleLevel != null">role_level = #{roleLevel},</if>
+            <if test="memo != null">memo = #{memo},</if>
+            <if test="orgId != null">org_id = #{orgId},</if>
+        </trim>
+        where role_id = #{roleId}
+    </update>
+
+    <delete id="deleteRolesByRoleId" parameterType="String">
+        delete from wwp_roles where role_id = #{roleId}
+    </delete>
+
+    <delete id="deleteRolesByRoleIds" parameterType="String">
+        delete from wwp_roles where role_id in 
+        <foreach item="roleId" collection="array" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+    </delete>
+</mapper>
